@@ -5,9 +5,9 @@ using System.Collections;
 /// <summary>
 /// シーンの遷移を管理
 /// </summary>
-public class YggdraSceneManager : MonoBehaviour {
+public class JoyfulowerSceneManager : MonoBehaviour {
 
-	public static YggdraSceneManager instance;
+	public static JoyfulowerSceneManager instance;
 	
 	/// <summary>
 	/// デモフラグ

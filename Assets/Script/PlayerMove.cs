@@ -41,7 +41,7 @@ public class PlayerMove : MonoBehaviour
 	private IEnumerator StartLoad()
 	{
 		// シーンマネージャが定義されるまで待機
-		while( YggdraSceneManager.instance == null )
+		while( JoyfulowerSceneManager.instance == null )
 			yield return null;
 
 		StartCoroutine( GetGpsPosRegularly() );

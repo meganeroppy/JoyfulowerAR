@@ -30,7 +30,7 @@ public class GPSLoader : MonoBehaviour
 	{
 		GpsPosition ret;
 
-		if( YggdraSceneManager.instance != null && YggdraSceneManager.instance.demo )
+		if( JoyfulowerSceneManager.instance != null && JoyfulowerSceneManager.instance.demo )
 		{
 			// デモモードのときはダミーデータを作成してコールバック
 			ret =  ARObjectSetter.sampleData[myPosKey];

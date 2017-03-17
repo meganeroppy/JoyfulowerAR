@@ -11,17 +11,33 @@ namespace api_jf
 	/// <summary>
 	/// 定数定義
 	/// </summary>
-	public static class Const2
+	public static class Const
 	{
 		/// <summary>
 		/// リトライ間隔
 		/// </summary>
-		public const int  RETRY_INTERVAL = 3;
+		public const int RETRY_INTERVAL = 3;
 
 		/// <summary>
 		/// 最大リトライ回数
 		/// </summary>
-		public const int  RETRY_NUM = 3;
+		public const int RETRY_NUM = 3;
+
+		/// <summary>
+		/// メソッド種類
+		/// </summary>
+		public const string method = "POST";
+
+		/// <summary>
+		/// プロトコル種類
+		/// </summary>
+		public const string protocol = "http";
+
+		/// <summary>
+		/// FQDN (Fully Qualitied Domain Name)
+		/// </summary>
+	//	public const string fqdn = "ec2-35-166-84-86.us-west-2.compute.amazonaws.com";
+		public const string fqdn = "www.triaws.com";
 	}
 
 	/// <summary>
@@ -36,58 +52,122 @@ namespace api_jf
 		}
 
 		/// <summary>
+		/// サーバURL
+		/// </summary>
+		public static string serverUrl
+		{
+			get
+			{
+				return Const.protocol + "://" + Const.fqdn + "/";
+			}
+		}
+
+		/// <summary>
 		/// 呼び出し
 		/// </summary>
-		private IEnumerator Call<ResType>(string urlStr, WWWForm form=null, System.Action<GetTweetInfoResponseParameter> callback=null)
-		where ResType : GetTweetInfoResponseParameter
+		private IEnumerator Call<ReqType, ResType>( ReqType req, System.Action<ResType> callback = null )
+			where ReqType : class, RequestParamInterface, new()
+			where ResType : class, ResponseParamInterface
 		{
-			Debug.Log("通信開始 : " + urlStr);
+			// リクエストがなければ作成
+			if( req == null ) { req = new ReqType(); }
+
+			// url作成
+			string url = GetURL( req.ApiName );
+
+			// 一旦Jsonに変換
+			var json = JsonUtility.ToJson( req );
+
+			// Json変換でパラメータがあればGetメソッド用パラメータに変換して最後に付ける
+			if( !string.IsNullOrEmpty( json ) )
+			{
+				var getParam = MakeGetMethodParamFromJson( json );
+				url += getParam;
+			}
+
+			Debug.Log( "通信開始 : " + url );
 
 			WWW www = null;
-		//	int retryCnt = Const.RETRY_NUM; //  リトライする回数
-		//	float retryInterval = Const.RETRY_INTERVAL; // 一回リトライするまでの秒数
-			int retryCnt = 5; //  リトライする回数
-			float retryInterval = 10f; // 一回リトライするまでの秒数
+			int retryCnt = Const.RETRY_NUM; //  リトライする回数
+			float retryInterval = Const.RETRY_INTERVAL; // 一回リトライするまでの秒数
 
 			bool succeed = false;
-			for(int i=0 ; i < retryCnt ; i++){
+			for( int i = 0 ; i < retryCnt ; i++ )
+			{
+				www = new WWW( url );
 
-				www = null;
-				if(form != null){
-					www = new WWW(urlStr, form);
-				}else{
-					www = new WWW(urlStr);
-				}
-
-				Debug.Log("待機中 " + (i+1).ToString() + "回目 " + urlStr);
+				Debug.Log( "待機中 " + ( i + 1 ).ToString() + "回目 " + url );
 				yield return www;
 
-				if(!string.IsNullOrEmpty( www.error )){
-					Debug.LogWarning("通信エラー\n" + retryInterval.ToString() + "秒後にリトライします : " + urlStr);
-					yield return new WaitForSeconds(retryInterval);
-				}else{
+				if( !string.IsNullOrEmpty( www.error ) )
+				{
+					Debug.LogWarning( "通信エラー\n" + retryInterval.ToString() + "秒後にリトライします : " + url );
+					yield return new WaitForSeconds( retryInterval );
+				}
+				else
+				{
 					succeed = true;
 					break;
 				}
 			}
 
-			if(!succeed){
-				Debug.LogWarning("リトライを" + retryCnt.ToString() + "回行いましたが、正しい値を得られませんでした。");
+			if( !succeed )
+			{
+				Debug.LogWarning( "リトライを" + retryCnt.ToString() + "回行いましたが、正しい値を得られませんでした。" );
 			}
 
 			string str = succeed ? "成功" : "失敗";
-			Debug.Log(str + " : " + urlStr);
+			Debug.Log( str + " : " + url );
 
-			yield return www;
-
-			//  値を取り出す 
-			var text = www.text;
-
-			if( !string.IsNullOrEmpty( text ) )
-			{				
-				// パースして値を返す
-				callback( ParsefromCsv<ResType>( text ) );
+			ResType res = null;
+			try
+			{
+				res = JsonUtility.FromJson<ResType>( www.text );
 			}
+			catch( System.Exception e )
+			{
+				Debug.LogError( e.ToString() );
+			}
+
+			if( res != null )
+			{
+				Debug.Log( "response = " + www.text );
+				// 適切な値を返す
+				callback( res );
+			}
+		}
+
+		/// <summary>
+		/// API名から接続先URLを取得する
+		/// </summary>
+		/// <param name="apiName"></param>
+		public static string GetURL( string apiName )
+		{
+			return serverUrl + "?" + apiName;
+		}
+
+		/// <summary>
+		/// JsonでGetメソッドのパラメータを作る
+		/// </summary>
+		private string MakeGetMethodParamFromJson( string json )
+		{
+			string ret = json;
+
+			// 余分な文字を除く
+			ret = ret.Trim( new char[] { '{', '}' } );
+
+			// なぜかTrimで " が残るのでReplaceを使う
+			ret = ret.Replace( "\"", "" );
+
+			// ":"を"="で置き換え
+			ret = ret.Replace( ':', '=' );
+			// ","を"&"で置き換え
+			ret = ret.Replace( ',', '&' );
+
+			// 先頭に"&"をつける
+			ret = "&" + ret;
+
+			return ret;
 		}
 
 		/// <summary>
@@ -137,12 +217,45 @@ namespace api_jf
 		{
 			var request = new GetTweetInfoRequestParameter();
 
-			yield return StartCoroutine( Call<GetTweetInfoResponseParameter>( request.url, null, res =>
+			yield return StartCoroutine( Call<GetTweetInfoRequestParameter, GetTweetInfoResponseParameter>( request, res =>
 			{
 				callback( res );
 			}) );
 		}
-	}		
+	}
+
+	/// <summary>
+	/// リクエストパラメータにはこのインタフェースの継承が必要
+	/// </summary>
+	public interface RequestParamInterface
+	{
+		/// <summary>
+		/// API名
+		/// </summary>
+		string ApiName
+		{
+			get;
+		}
+	}
+
+	/// <summary>
+	/// レスポンスパラメータにはこのインタフェースの継承が必要
+	/// </summary>
+	public interface ResponseParamInterface
+	{
+		/*
+		/// <summary>
+		/// レスポンスステータス
+		/// </summary>
+		ResponseParameterCode.Status Status
+		{
+			get;
+#if UNITY_EDITOR
+			set;
+#endif
+		}
+		*/
+	}
 
 	/// <summary>
 	/// GPS座標データ
@@ -166,9 +279,9 @@ namespace api_jf
 	}
 
 	/// <summary>
-	/// ツイート情報取得リクエストパラメータ
+	/// ツイート情報取得レスポンスパラメータ
 	/// </summary>
-	public class GetTweetInfoResponseParameter
+	public class GetTweetInfoResponseParameter : ResponseParamInterface
 	{
 		/// <summary>
 		/// つぶやき情報
@@ -186,6 +299,9 @@ namespace api_jf
 			/// </summary>
 			public string felling;
 
+			/// <summary>
+			/// コメント
+			/// </summary>
 			public string comment;
 
 			/// <summary>
@@ -224,9 +340,9 @@ namespace api_jf
 	}
 
 	/// <summary>
-	/// ツイート情報取得レスポンスパラメータ
+	/// ツイート情報取得リクエストパラメータ
 	/// </summary>
-	public  class GetTweetInfoRequestParameter
+	public  class GetTweetInfoRequestParameter : RequestParamInterface
 	{
 		/// <summary>
 		/// 自分の座標
@@ -238,9 +354,17 @@ namespace api_jf
 		/// </summary>
 		//public float range;
 
+		public virtual string ApiName
+		{
+			get
+			{
+				return "~joyfulower/keiji/prot/API001.php";
+			}
+		}
+
 		/// <summary>
 		/// URL
 		/// </summary>
-		public string url = "http://www.triaws.com/~joyfulower/keiji/prot/API001.php";
+		//public string url = "http://www.triaws.com/~joyfulower/keiji/prot/API001.php";
 	}
 }

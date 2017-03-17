@@ -37,12 +37,12 @@ public class DebugButton : MonoBehaviour {
 
 	private void UpdateGatherModeButtonLabel()
 	{
-		if( YggdraSceneManager.instance == null )
+		if( JoyfulowerSceneManager.instance == null )
 		{
 			return;
 		}
 
-		gatherModeButtonLabel.text = YggdraSceneManager.instance.useGatheredData ? "ON" : "OFF";
+		gatherModeButtonLabel.text = JoyfulowerSceneManager.instance.useGatheredData ? "ON" : "OFF";
 	}
 
 	/// <summary>
@@ -71,7 +71,7 @@ public class DebugButton : MonoBehaviour {
 	/// </summary>
 	public void OnClickSwitchGatheringButton()
 	{
-		YggdraSceneManager.instance.useGatheredData = !YggdraSceneManager.instance.useGatheredData;
+		JoyfulowerSceneManager.instance.useGatheredData = !JoyfulowerSceneManager.instance.useGatheredData;
 	}
 
 	/// <summary>

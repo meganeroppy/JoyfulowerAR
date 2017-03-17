@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 /// <summary>
-/// API関連
+/// ユグドラで使用したAPI関連
 /// </summary>
 namespace api_ygg
 {
@@ -53,7 +53,7 @@ namespace api_ygg
 		/// </summary>
 		public IEnumerator GetUfoInfo( System.Action<GetUfoInfoResponse> callback, GetUfoInfoRequest request )
 		{
-			if( YggdraSceneManager.instance != null && YggdraSceneManager.instance.demo )
+			if( JoyfulowerSceneManager.instance != null && JoyfulowerSceneManager.instance.demo )
 			{
 				callback( GetDummyUfoInfo() );
 				yield break;
@@ -122,7 +122,7 @@ namespace api_ygg
 		/// </summary>
 		public IEnumerator AttackUfo( List<AttackUfoRequest> list, System.Action<GetUfoInfoResponse> callback )
 		{
-			if( YggdraSceneManager.instance != null && YggdraSceneManager.instance.demo )
+			if( JoyfulowerSceneManager.instance != null && JoyfulowerSceneManager.instance.demo )
 			{
 				// デモの時はローカルで完結
 				yield break;
@@ -133,7 +133,7 @@ namespace api_ygg
 			request.x = (double)gpsLoc.longitude;
 			request.y = (double)gpsLoc.latitude;
 			request.type = 1;
-			request.u_rand = YggdraSceneManager.instance.useGatheredData;
+			request.u_rand = JoyfulowerSceneManager.instance.useGatheredData;
 
 
 			// TODO: 本来は全て渡すが、現状１つしか渡せないので１つめを渡す
@@ -152,7 +152,7 @@ namespace api_ygg
 		/// </summary>
 		public IEnumerator UpdateChatInfo( System.Action< List<ChatData> > callback, UpdateChatRequest request )
 		{
-			if( YggdraSceneManager.instance != null && YggdraSceneManager.instance.demo )
+			if( JoyfulowerSceneManager.instance != null && JoyfulowerSceneManager.instance.demo )
 			{
 				callback( CreateDummyChatInfo() );
 				yield break;
