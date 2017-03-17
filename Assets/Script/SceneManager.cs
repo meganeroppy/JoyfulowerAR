@@ -58,8 +58,8 @@ public class JfSceneManager : MonoBehaviour
 	/// ( = 実際にデータの取得は行わなくする)
 	/// </summary>
 	[SerializeField]
-	private bool simulateGetFromDatabase = false;
-
+	private bool _simulateGetFromDatabase = false;
+	public bool simulateGetFromDatabase { get { return _simulateGetFromDatabase; } }
 
 	// Use this for initialization
 	void Start () 
@@ -86,32 +86,12 @@ public class JfSceneManager : MonoBehaviour
 	{
 		Debug.Log("ツイート情報取得中");
 
-		if( simulateGetFromDatabase )
+		// データベースからデータを取得する
+		yield return StartCoroutine( api.GetTweetInfo( res => 
 		{
-			// データベースからの取得をシミュレート
-			Debug.Log("APIの返却値での花生成をシミュレートします");
-			var twtCnt = Random.Range(6, 15);
-
-			var alp = "ABCDEF";
-
-			for( int i=0 ; i < twtCnt ; i++ )
-			{
-				var info = new api_jf.GetTweetInfoResponseParameter.TweetInfo();
-				var idx = Random.Range(0, alp.Length);
-				info.felling = alp[idx].ToString();
-			//	flowerBaseGroup.SetFlower( info );
-			}
-
-		}
-		else{
-			// 実際にデータベースからデータを取得する
-			yield return StartCoroutine( api.GetTweetInfo( res => 
-			{
-				Debug.Log("APIの返却値で花の生成を行います");
-			//	res.tweetInfoList.ForEach( v => { flowerBaseGroup.SetFlower( v ); });
-			} ) );
-		}
-
+			Debug.Log("APIの返却値で花の生成を行います");
+		//	res.tweetInfoList.ForEach( v => { flowerBaseGroup.SetFlower( v ); });
+		} ) );
 
 		// 一定時間待機
 		yield return new WaitForSeconds( update_interval );

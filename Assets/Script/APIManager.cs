@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
-
 /// <summary>
 /// API のパラメータ群
 /// </summary>
@@ -215,6 +214,31 @@ namespace api_jf
 		/// </summary>
 		public IEnumerator GetTweetInfo( System.Action< GetTweetInfoResponseParameter > callback )
 		{
+			if( JfSceneManager.instance.simulateGetFromDatabase )
+			{
+				var res = new GetTweetInfoResponseParameter();
+			
+				// データベースからの取得をシミュレート
+				Debug.Log("APIの返却値での花生成をシミュレートします");
+				var twtCnt = UnityEngine.Random.Range(6, 15);
+
+				var alp = "ABCDEF";
+
+				for( int i = 0 ; i < twtCnt ; i++ )
+				{
+					var info = new GetTweetInfoResponseParameter.TweetInfo();
+					var idx = UnityEngine.Random.Range( 0, alp.Length );
+					info.felling = alp[ idx ].ToString();
+
+					res.tweetInfoList.Add( info );
+				}
+
+				callback( res );
+
+				yield break;
+			}
+
+
 			var request = new GetTweetInfoRequestParameter();
 
 			yield return StartCoroutine( Call<GetTweetInfoRequestParameter, GetTweetInfoResponseParameter>( request, res =>
