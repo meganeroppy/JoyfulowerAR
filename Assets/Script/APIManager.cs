@@ -306,7 +306,7 @@ namespace api
 	/// <summary>
 	/// つぶやき情報
 	/// </summary>
-	public struct TweetInfo
+	public class TweetInfo
 	{
 		public int id;
 		/// <summary>
@@ -332,10 +332,17 @@ namespace api
 		public string status;
 	}
 
+	public class HappinessEnergy 
+	{
+		public FlowerBase.FlowerType type;
+
+		public int count;
+	}
+
 	/// <summary>
 	/// ブルームポイント情報
 	/// </summary>
-	public struct BloomPointInfo
+	public class BloomPointInfo
 	{
 		/// <summary>
 		/// 位置情報
@@ -343,9 +350,14 @@ namespace api
 		public GPS gps;
 
 		/// <summary>
-		/// 幸福指数
+		/// 幸福度エナジー
 		/// </summary>
-		public int happiness;
+		public List<HappinessEnergy> energy = new List<HappinessEnergy>();
+
+		/// <summary>
+		/// 開花に必要な幸福度エナジー
+		/// </summary>
+		public int energyToBloom = 1;
 	}
 	/// <summary>
 	/// ツイート情報取得レスポンスパラメータ
