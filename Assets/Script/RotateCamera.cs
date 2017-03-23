@@ -4,7 +4,7 @@ using System.Collections;
 class RotateCamera : MonoBehaviour
 {
 	[SerializeField]
-	Transform rotCamera;
+	Transform rotCamera = null;
 
 	void Update () 
 	{

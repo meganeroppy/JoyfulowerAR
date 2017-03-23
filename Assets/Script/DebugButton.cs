@@ -8,13 +8,13 @@ public class DebugButton : MonoBehaviour {
 	/// デバッグ用UI
 	/// </summary>
 	[SerializeField]
-	private GameObject debugUiGroup;
+	private GameObject debugUiGroup = null;
 
 	/// <summary>
 	/// デバッグ用グリッドキューブ
 	/// </summary>
 	[SerializeField]
-	private GameObject gridCube;
+	private GameObject gridCube = null;
 
 	[SerializeField]
 	private bool activeInDefault = false;
@@ -28,7 +28,7 @@ public class DebugButton : MonoBehaviour {
 	}
 
 	[SerializeField]
-	private Text gatherModeButtonLabel;
+	private Text gatherModeButtonLabel = null;
 
 	private void Update()
 	{
@@ -37,12 +37,12 @@ public class DebugButton : MonoBehaviour {
 
 	private void UpdateGatherModeButtonLabel()
 	{
-		if( JoyfulowerSceneManager.instance == null )
+		if( YggdraSceneManager.instance == null )
 		{
 			return;
 		}
 
-		gatherModeButtonLabel.text = JoyfulowerSceneManager.instance.useGatheredData ? "ON" : "OFF";
+		gatherModeButtonLabel.text = YggdraSceneManager.instance.useGatheredData ? "ON" : "OFF";
 	}
 
 	/// <summary>
@@ -71,7 +71,7 @@ public class DebugButton : MonoBehaviour {
 	/// </summary>
 	public void OnClickSwitchGatheringButton()
 	{
-		JoyfulowerSceneManager.instance.useGatheredData = !JoyfulowerSceneManager.instance.useGatheredData;
+		YggdraSceneManager.instance.useGatheredData = !YggdraSceneManager.instance.useGatheredData;
 	}
 
 	/// <summary>

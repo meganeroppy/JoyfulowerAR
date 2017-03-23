@@ -11,13 +11,13 @@ public class LoadingSceneUIController : MonoBehaviour {
 	/// Now Loading...のテキスト
 	/// </summary>
 	[SerializeField]
-	private Text loadingText;
+	private Text loadingText = null;
 
 	/// <summary>
 	/// 背景画像
 	/// </summary>
 	[SerializeField]
-	private Image bgImage;
+	private Image bgImage = null;
 
 	[SerializeField]
 	private float fadeSpeed = 1f;

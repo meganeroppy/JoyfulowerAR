@@ -8,13 +8,10 @@ using DG.Tweening;
 /// <summary>
 /// チャットボタン関連制御
 /// </summary>
-public class ChatButtonUIController : EventTrigger {
-
+public class ChatButtonUIController : EventTrigger 
+{
 	[SerializeField]
-	private api_ygg.APIManager apiManager;
-
-	[SerializeField]
-	private RectTransform emoteButtonGroup;
+	private RectTransform emoteButtonGroup = null;
 
 	private bool dispEmoteIcons = false;
 

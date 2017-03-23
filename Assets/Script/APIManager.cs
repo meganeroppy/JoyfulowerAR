@@ -2,10 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+
 /// <summary>
 /// API のパラメータ群
 /// </summary>
-namespace api_jf 
+namespace api 
 {
 	/// <summary>
 	/// 定数定義
@@ -179,13 +180,13 @@ namespace api_jf
 			where ResType : GetTweetInfoResponseParameter
 		{
 			var param = new GetTweetInfoResponseParameter ();
-			param.tweetInfoList = new List<GetTweetInfoResponseParameter.TweetInfo> ();
+			param.tweetInfoList = new List<TweetInfo> ();
 
 			// レコード単位で分割
 			var records = csv.Split ('\n');
 			for (int i = 0; i < records.Length; i++) 
 			{
-				var tInfo = new GetTweetInfoResponseParameter.TweetInfo ();
+				var tInfo = new TweetInfo ();
 
 				var data = records [i].Split (',');
 
@@ -226,7 +227,7 @@ namespace api_jf
 
 				for( int i = 0 ; i < twtCnt ; i++ )
 				{
-					var info = new GetTweetInfoResponseParameter.TweetInfo();
+					var info = new TweetInfo();
 					var idx = UnityEngine.Random.Range( 0, alp.Length );
 					info.felling = alp[ idx ].ToString();
 
@@ -303,54 +304,55 @@ namespace api_jf
 	}
 
 	/// <summary>
+	/// つぶやき情報
+	/// </summary>
+	public struct TweetInfo
+	{
+		public int id;
+		/// <summary>
+		/// 位置情報
+		/// </summary>
+		public GPS gps;
+
+		/// <summary>
+		/// 幸福指数
+		/// </summary>
+		public string felling;
+
+		/// <summary>
+		/// コメント
+		/// </summary>
+		public string comment;
+
+		/// <summary>
+		/// つぶやかれた時間
+		/// </summary>
+		public DateTime date;
+
+		public string status;
+	}
+
+	/// <summary>
+	/// ブルームポイント情報
+	/// </summary>
+	public struct BloomPointInfo
+	{
+		/// <summary>
+		/// 位置情報
+		/// </summary>
+		public GPS gps;
+
+		/// <summary>
+		/// 幸福指数
+		/// </summary>
+		public int happiness;
+	}
+	/// <summary>
 	/// ツイート情報取得レスポンスパラメータ
 	/// </summary>
 	public class GetTweetInfoResponseParameter : ResponseParamInterface
 	{
-		/// <summary>
-		/// つぶやき情報
-		/// </summary>
-		public struct TweetInfo
-		{
-			public int id;
-			/// <summary>
-			/// 位置情報
-			/// </summary>
-			public GPS gps;
 
-			/// <summary>
-			/// 幸福指数
-			/// </summary>
-			public string felling;
-
-			/// <summary>
-			/// コメント
-			/// </summary>
-			public string comment;
-
-			/// <summary>
-			/// つぶやかれた時間
-			/// </summary>
-			public DateTime date;
-
-			public string status;
-		}
-
-		/// <summary>
-		/// ブルームポイント情報
-		/// </summary>
-		public struct BloomPointInfo
-		{
-			/// <summary>
-			/// 位置情報
-			/// </summary>
-			public GPS gps;
-
-			/// <summary>
-			/// 幸福指数
-			/// </summary>
-			public int happiness;
-		}
 			
 		/// <summary>
 		/// つぶやきリスト

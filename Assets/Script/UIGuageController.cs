@@ -8,13 +8,13 @@ public class UIGuageController : MonoBehaviour {
 	/// ゲージのフィル部分
 	/// </summary>
 	[SerializeField]
-	private Image fillSprite;
+	private Image fillSprite = null;
 
 	/// <summary>
 	/// ターゲット情報
 	/// </summary>
 	[SerializeField]
-	private Text targetInfo;
+	private Text targetInfo = null;
 
 	private void Update()
 	{

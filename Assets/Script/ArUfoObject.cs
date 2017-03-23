@@ -22,13 +22,12 @@ public class ArUfoObject : MonoBehaviour
 	/// ローカルで与えたダメージ
 	/// </summary>
 	public int damage{ private set; get; }
-	private int _damage;
 
 	/// <summary>
 	/// 耐久値ゲージ
 	/// </summary>
 	[SerializeField]
-	private Image HealthGauge;
+	private Image HealthGauge = null;
 
 	private string areaName;
 

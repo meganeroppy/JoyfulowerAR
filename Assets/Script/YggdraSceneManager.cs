@@ -3,11 +3,11 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 
 /// <summary>
-/// シーンの遷移を管理
+/// ユグドラで使用したシーンマネージャ
 /// </summary>
-public class JoyfulowerSceneManager : MonoBehaviour {
+public class YggdraSceneManager : MonoBehaviour {
 
-	public static JoyfulowerSceneManager instance;
+	public static YggdraSceneManager instance;
 	
 	/// <summary>
 	/// デモフラグ

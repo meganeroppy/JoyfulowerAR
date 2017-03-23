@@ -10,8 +10,6 @@ public class GyroAccelerator : MonoBehaviour {
 
 	Vector3 origin;
 
-	Rigidbody r;
-
 	void Start()
 	{
 		origin = transform.position;

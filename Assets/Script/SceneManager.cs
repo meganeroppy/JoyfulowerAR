@@ -14,8 +14,8 @@ public class JfSceneManager : MonoBehaviour
 	/// </summary>
 	public enum SceneType
 	{
-		Walk,	// 散策
-		Bouquet,// 花束作成
+		Explore,	// 散策
+		Bouquet,	// 花束作成
 	}
 
 	/// <summary>
@@ -33,7 +33,7 @@ public class JfSceneManager : MonoBehaviour
 	/// APIマネージャ
 	/// </summary>
 	[SerializeField]
-	private api_jf.APIManager api;
+	private api.APIManager api = null;
 
 	/// <summary>
 	/// 取得した花の構造体
@@ -49,6 +49,11 @@ public class JfSceneManager : MonoBehaviour
 		/// 所持数
 		/// </summary>
 		public int count;
+
+		/// <summary>
+		/// 花の種類
+		/// </summary>
+		public FlowerBase.FlowerType flowerType;
 	}
 
 	public List<FlowerItem> fList;
@@ -65,8 +70,11 @@ public class JfSceneManager : MonoBehaviour
 	void Start () 
 	{
 		instance = this;
-		sceneType = SceneType.Walk;
 
+		// デフォルトは散策モード
+		sceneType = SceneType.Explore;
+
+		// 花アイテムリストを初期化
 		fList = new List<FlowerItem>();
 
 		if( api == null )
@@ -75,28 +83,41 @@ public class JfSceneManager : MonoBehaviour
 			return;
 		}
 
+		// 一定周期でツィートを情報を取得
 		StartCoroutine( WaitAndGetTweetInfo() );
-	}		
+	}
+
+	/// <summary>
+	/// マップ制御系
+	/// </summary>
+	[SerializeField]
+	MapController map = null;
 
 	/// <summary>
 	/// 一定間隔でツイート情報の更新を行う
 	/// </summary>
-	/// <returns>The and get tweet info.</returns>
 	IEnumerator WaitAndGetTweetInfo()
 	{
-		Debug.Log("ツイート情報取得中");
+		//Debug.Log("ツイート情報取得中");
+		float timer = 0;
 
-		// データベースからデータを取得する
-		yield return StartCoroutine( api.GetTweetInfo( res => 
+		while( true )
 		{
-			Debug.Log("APIの返却値で花の生成を行います");
-		//	res.tweetInfoList.ForEach( v => { flowerBaseGroup.SetFlower( v ); });
-		} ) );
+			// データベースからデータを取得する
+			yield return StartCoroutine( api.GetTweetInfo( res =>
+			{
+				Debug.Log( "APIの返却値で花の生成を行います" );
 
-		// 一定時間待機
-		yield return new WaitForSeconds( update_interval );
+				// マップを更新
+				map.UpdateMarker( res.tweetInfoList, res.bloomPointInfoList );
+			} ) );
 
-		// 更新
-		StartCoroutine( WaitAndGetTweetInfo() );
+			// 一定時間待機
+			while( timer < update_interval )
+			{
+				yield return null;
+				timer += Time.deltaTime;
+			}
+		}
 	}
 }

@@ -27,7 +27,7 @@ public class ARObjectSetter : MonoBehaviour
 	/// 出現中UFO数テキスト
 	/// </summary>
 	[SerializeField]
-	private Text ufoCount;
+	private Text ufoCount = null;
 
 	/// <summary>
 	/// UFO情報取得間隔秒
@@ -119,7 +119,7 @@ public class ARObjectSetter : MonoBehaviour
 	IEnumerator StartLoad()
 	{
 		// シーンマネージャが定義されるまで待機
-		while( JoyfulowerSceneManager.instance == null ) 
+		while( YggdraSceneManager.instance == null ) 
 			yield return null;
 
 		// プレイヤーの初期位置が設定されるまで待機
@@ -153,7 +153,7 @@ public class ARObjectSetter : MonoBehaviour
 			request.x = (double)gpsLoc.longitude;
 			request.y = (double)gpsLoc.latitude;
 			request.type = 1;
-			request.u_rand = JoyfulowerSceneManager.instance.useGatheredData;
+			request.u_rand = YggdraSceneManager.instance.useGatheredData;
 
 			// UFO情報をサーバーから取得して表示する
 			StartCoroutine( apiManager.GetUfoInfo( res =>
@@ -218,7 +218,7 @@ public class ARObjectSetter : MonoBehaviour
 					changeList.Add( param );
 				}
 
-				if( !JoyfulowerSceneManager.instance.demo )
+				if( !YggdraSceneManager.instance.demo )
 				{
 					// ローカルでのダメージを初期化
 					ufo.ResetLocalDamge();
@@ -258,13 +258,6 @@ public class ARObjectSetter : MonoBehaviour
 		}
 	}
 
-	[SerializeField]
-	private GameObject chatObject;
-
-
-	[SerializeField]
-	private RectTransform canvasRect;
-
 	public bool dispChatObjOnUI = false;
 
 	/// <summary>
@@ -296,7 +289,7 @@ public class ARObjectSetter : MonoBehaviour
 
 				// オプションを指定
 				request.type = updateChatInfoOnce ? 4 : 3; // 初回は全て取得　２回目以降は初回取得以降に送信された情報のみ取得
-				request.u_rand = JoyfulowerSceneManager.instance.useGatheredData;
+				request.u_rand = YggdraSceneManager.instance.useGatheredData;
 
 				yield return apiManager.UpdateChatInfo( res => 
 					{

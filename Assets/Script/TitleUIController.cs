@@ -21,7 +21,7 @@ public class TitleUIController : MonoBehaviour
 	/// </summary>
 	public void OnClickScreen()
 	{
-		if( JoyfulowerSceneManager.instance == null )
+		if( YggdraSceneManager.instance == null )
 		{
 			return;
 		}
@@ -36,18 +36,18 @@ public class TitleUIController : MonoBehaviour
 	/// </summary>
 	public void OnClickDemoButton()
 	{
-		if( JoyfulowerSceneManager.instance == null )
+		if( YggdraSceneManager.instance == null )
 		{
 			return;
 		}
 
-		JoyfulowerSceneManager.instance.demo = true;
+		YggdraSceneManager.instance.demo = true;
 
 		StartLoginProcess();
 	}
 
 	private void StartLoginProcess()
 	{
-		JoyfulowerSceneManager.instance.StartLoginProcess();
+		YggdraSceneManager.instance.StartLoginProcess();
 	}
 }

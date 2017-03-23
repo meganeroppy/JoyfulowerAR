@@ -5,7 +5,7 @@ using System.Collections;
 public class ChatBalloon : MonoBehaviour {
 
 	[SerializeField]
-	private Text text;
+	private Text text = null;
 
 	public void Set(string text, Transform targetTransform, RectTransform canvasRect)
 	{

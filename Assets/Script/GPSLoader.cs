@@ -10,7 +10,7 @@ public class GPSLoader : MonoBehaviour
 	public LocationServiceStatus Status;
 
 	[SerializeField]
-	private string defaultPosKey;
+	private string defaultPosKey = null;
 
 	[System.NonSerialized]
 	public string myPosKey;
@@ -30,7 +30,7 @@ public class GPSLoader : MonoBehaviour
 	{
 		GpsPosition ret;
 
-		if( JoyfulowerSceneManager.instance != null && JoyfulowerSceneManager.instance.demo )
+		if( YggdraSceneManager.instance != null && YggdraSceneManager.instance.demo )
 		{
 			// デモモードのときはダミーデータを作成してコールバック
 			ret =  ARObjectSetter.sampleData[myPosKey];
