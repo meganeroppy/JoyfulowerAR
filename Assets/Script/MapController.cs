@@ -89,12 +89,20 @@ public class MapController : MonoBehaviour
 			if( b.energy.Count >= b.energyToBloom )
 			{
 				//	var texIdx = GetFeelingToInt( t.felling );
-				var texIdx = 0;
+				var texIdx = 1;
 				m.texture = flowerTex[ texIdx ];
 
-				// 初期化
-				m.Init();
 			}
+			else
+			{
+				// 開花していないブルーム地点
+				var texIdx = 0;
+				m.texture = flowerTex[ texIdx ];
+			}
+
+			// 初期化
+			// テクスチャ変更後は初期化が必要
+			m.Init();
 
 			markers.Add( m );
 		}

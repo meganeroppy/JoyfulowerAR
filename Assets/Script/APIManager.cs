@@ -238,11 +238,14 @@ namespace api
 				}
 
 				// ブルーム地点数
-				var bInfo = new BloomPointInfo();
+				BloomPointInfo bInfo;
+				bInfo = new BloomPointInfo();
 				bInfo.gps = new GPS(ARObjectSetter.sampleData["SoraCity"]);
 				res.bloomPointInfoList.Add( bInfo );
-				bInfo.gps = new GPS(ARObjectSetter.sampleData["DaiBiru"]);
+				bInfo = new BloomPointInfo(); 
+				bInfo.gps = new GPS( ARObjectSetter.sampleData[ "DaiBiru" ] );
 				res.bloomPointInfoList.Add( bInfo );
+				bInfo = new BloomPointInfo();
 				bInfo.gps = new GPS(ARObjectSetter.sampleData["TokyoDoom"]);
 				res.bloomPointInfoList.Add( bInfo );
 

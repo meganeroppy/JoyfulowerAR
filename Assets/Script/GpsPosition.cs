@@ -9,13 +9,13 @@ public class GpsPosition
 	public decimal latitude;
 	public decimal longitude;
 	public decimal altitude;
-	public GpsPosition( decimal longitude, decimal latitude, decimal altitude )
+	public GpsPosition( decimal latitude, decimal longitude, decimal altitude )
 	{
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.altitude = altitude;		
 	}
-	public GpsPosition( double longitude, double latitude, double altitude )
+	public GpsPosition( double latitude, double longitude, double altitude )
 	{
 		this.latitude = (decimal)latitude;
 		this.longitude = (decimal)longitude;
@@ -27,7 +27,7 @@ public class GpsPosition
 	/// </summary>
 	public static GpsPosition Loc2Gps( LocationInfo loc )
 	{
-		return new GpsPosition( ( decimal )loc.longitude, ( decimal )loc.latitude, ( decimal )loc.altitude );
+		return new GpsPosition( ( decimal )loc.latitude, ( decimal )loc.longitude, ( decimal )loc.altitude );
 	}
 
 	/// <summary>
