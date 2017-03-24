@@ -38,6 +38,10 @@ namespace api
 		/// </summary>
 	//	public const string fqdn = "ec2-35-166-84-86.us-west-2.compute.amazonaws.com";
 		public const string fqdn = "www.triaws.com";
+
+		// 送信
+		// 	// /~joyfulower/keiji/prot/put.php?lat=0.0&lon=0.0&alt=0.0&joy=A&comm=&submit=%E9%80%81%E4%BF%A1
+
 	}
 
 	/// <summary>
@@ -262,6 +266,26 @@ namespace api
 				callback( res );
 			}) );
 		}
+
+
+		/// <summary>
+		/// サンプルツイートを送信する
+		/// </summary>
+		public IEnumerator SendSampleTweet(SendSampleTweetRequestParameter request, System.Action<SendSampleTweetResponseParameter> callback )
+		{
+			if( JfSceneManager.instance.simulateGetFromDatabase )
+			{
+				var res = new SendSampleTweetResponseParameter();
+				callback( res );
+
+				yield break;
+			}
+
+			yield return StartCoroutine( Call<SendSampleTweetRequestParameter, SendSampleTweetResponseParameter>( request, res =>
+			{
+				callback( res );
+			} ) );
+		}
 	}
 
 	/// <summary>
@@ -381,13 +405,12 @@ namespace api
 		/// </summary>
 		public int energyToBloom = 1;
 	}
+
 	/// <summary>
 	/// ツイート情報取得レスポンスパラメータ
 	/// </summary>
 	public class GetTweetInfoResponseParameter : ResponseParamInterface
 	{
-
-			
 		/// <summary>
 		/// つぶやきリスト
 		/// </summary>
@@ -426,5 +449,56 @@ namespace api
 		/// URL
 		/// </summary>
 		//public string url = "http://www.triaws.com/~joyfulower/keiji/prot/API001.php";
+	}
+
+	/// <summary>
+	/// サンプルツイート送信レスポンスパラメータ
+	/// </summary>
+	public class SendSampleTweetResponseParameter : ResponseParamInterface
+	{
+	}
+
+	/// <summary>
+	/// サンプルツイート送信リクエストパラメータ
+	/// </summary>
+	public class SendSampleTweetRequestParameter : RequestParamInterface
+	{
+		/// <summary>
+		/// 自分の座標
+		/// </summary>
+		public GPS my_position;
+
+		public virtual string ApiName
+		{
+			get
+			{
+				return "~joyfulower/keiji/prot/put.php";
+			}
+		}
+
+		/// <summary>
+		/// 自分の緯度
+		/// </summary>
+		public float lat;
+
+		/// <summary>
+		/// 自分の経度
+		/// </summary>
+		public float lon;
+
+		/// <summary>
+		/// 送信する感情
+		/// A,B,C,D,E, or F
+		/// </summary>
+		public char joy;
+
+		/// <summary>
+		/// コメント
+		/// 未使用
+		/// </summary>
+		public char comm;
+
+		// サンプルURL
+		// 	// http://www.triaws.com/~joyfulower/keiji/prot/put.php?lat=0.0&lon=0.0&alt=0.0&joy=A&comm=&submit=%E9%80%81%E4%BF%A1
 	}
 }
