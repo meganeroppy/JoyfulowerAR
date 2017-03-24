@@ -8,7 +8,7 @@ using DG.Tweening;
 /// <summary>
 /// Tweetテスト送信ボタン関連制御
 /// </summary>
-public class SendSampleTweetButtonUIController : MonoBehaviour 
+public class SampleTweetUIController : MonoBehaviour 
 {
 //	[SerializeField]
 //	private RectTransform tweetButtonGroup = null;
