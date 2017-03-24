@@ -8,10 +8,10 @@ using DG.Tweening;
 /// <summary>
 /// Tweetテスト送信ボタン関連制御
 /// </summary>
-public class SendSampleTweetButtonUIController : EventTrigger 
+public class SendSampleTweetButtonUIController : MonoBehaviour 
 {
-	[SerializeField]
-	private RectTransform tweetButtonGroup = null;
+//	[SerializeField]
+//	private RectTransform tweetButtonGroup = null;
 
 	private bool dispTweetIcons = false;
 
@@ -26,8 +26,8 @@ public class SendSampleTweetButtonUIController : EventTrigger
 	private float dispDurarion = 2f;
 	private float displTimer = 0;
 
-	float showLocalX = 400;
-	float hideLocalX = 540f;
+//	float showLocalX = 400;
+//	float hideLocalX = 540f;
 
 	public void OnClickSendSampleTweetButton( int feeling )
 	{ 
@@ -123,7 +123,7 @@ public class SendSampleTweetButtonUIController : EventTrigger
 	/// <summary>
 	/// ドラッグ開始されたときのイベント
 	/// </summary>
-	public override void OnBeginDrag( PointerEventData data )
+	public void OnBeginDrag( PointerEventData data )
 	{
 		Debug.Log("OnBeginaDrag");
 		dragBeginPos = data.position;
@@ -148,7 +148,7 @@ public class SendSampleTweetButtonUIController : EventTrigger
 	/// <summary>
 	/// ボタンの範囲外に抜けた時呼ばれる
 	/// </summary>
-	public override void OnPointerExit( PointerEventData data )
+	public void OnPointerExit( PointerEventData data )
 	{
 		Debug.Log("OnPointerExit");
 
