@@ -63,6 +63,7 @@ public class ARObjectSetter : MonoBehaviour
 
 	/// <summary>
 	/// 表示テスト用サンプルデータ
+	/// ( 緯度(lat), 経度(lng), 高度(alt) )
 	/// </summary>
 	public static Dictionary<string, GpsPosition> sampleData = new Dictionary<string, GpsPosition>() {
 		{"SoraCity", new GpsPosition( (decimal)35.698561,  (decimal)139.7667832, 180 )},

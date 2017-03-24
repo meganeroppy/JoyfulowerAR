@@ -6,14 +6,19 @@ using System.Collections.Generic;
 using DG.Tweening;
 
 /// <summary>
-/// チャットボタン関連制御
+/// Tweetテスト送信ボタン関連制御
 /// </summary>
-public class ChatButtonUIController : EventTrigger 
+public class SendSampleTweetButtonUIController : EventTrigger 
 {
 	[SerializeField]
-	private RectTransform emoteButtonGroup = null;
+	private RectTransform tweetButtonGroup = null;
 
-	private bool dispEmoteIcons = false;
+	private bool dispTweetIcons = false;
+
+	/// <summary>
+	/// 送信処理中か？
+	/// </summary>
+	private bool processing = false;
 
 	/// <summary>
 	/// エモートアイコンが並んでいる時間
@@ -24,10 +29,46 @@ public class ChatButtonUIController : EventTrigger
 	float showLocalX = 400;
 	float hideLocalX = 540f;
 
+	public void OnClickSendSampleTweetButton( int feeling )
+	{ 
+		// 処理中は何もしない
+		if( processing )
+		{
+			return;
+		}
+
+		StartCoroutine( SendSampleTweet( feeling ) );
+	}
+
+	private IEnumerator SendSampleTweet( int feeling )
+	{
+		// 処理中フラグを立てる
+		processing = true;
+
+		// API送信
+		yield return null;
+
+		// TODO: 送信完了をアナウンス
+		AnnounceCompleteSendSampleTweet( feeling );
+
+		// TODO: マーカーを更新
+
+		// 処理中フラグを下ろす
+		processing = false;
+	}
+
+	/// <summary>
+	/// 送信完了を通知
+	/// </summary>
+	private void AnnounceCompleteSendSampleTweet( int feeling )
+	{
+		// TODO: 演出
+		Debug.Log( "[ " + feeling.ToString() + " ] の送信に成功" );
+	}
 
 	private void Update()
 	{
-		UpdateAppearStatus();
+	//	UpdateAppearStatus();
 	}
 
 	/// <summary>
@@ -39,18 +80,19 @@ public class ChatButtonUIController : EventTrigger
 		{
 			displTimer -= Time.deltaTime;
 		}
-		else if( dispEmoteIcons )
+		else if( dispTweetIcons )
 		{
-			dispEmoteIcons = false;
-			ExpEmoteIcon( dispEmoteIcons );
+			dispTweetIcons = false;
+			ExpEmoteIcon( dispTweetIcons );
 		}
 	}
 
 	/// <summary>
-	/// エモートボタンの演出
+	/// ツィートボタン表示時・非表示切り替え時の演出
 	/// </summary>
 	private void ExpEmoteIcon(bool animIn)
 	{
+		/*
 		if( animIn )
 		{
 			// 表示
@@ -70,25 +112,36 @@ public class ChatButtonUIController : EventTrigger
 					emoteButtonGroup.gameObject.SetActive(false);
 				});
 		}
+		 */
 	}
 
+	/// <summary>
+	/// ドラッグ開始座標
+	/// </summary>
 	private Vector2 dragBeginPos;
 
+	/// <summary>
+	/// ドラッグ開始されたときのイベント
+	/// </summary>
 	public override void OnBeginDrag( PointerEventData data )
 	{
 		Debug.Log("OnBeginaDrag");
 		dragBeginPos = data.position;
 	}
+
+	/// <summary>
+	/// ドラッグ開始されたときのイベント
+	/// </summary>
 	public void OnBeginDrag( )
 	{
 		Debug.Log("OnBeginaDrag");
 
 		displTimer = dispDurarion;
 
-		if( !dispEmoteIcons )
+		if( !dispTweetIcons )
 		{
-			dispEmoteIcons = true;
-			ExpEmoteIcon( dispEmoteIcons );
+			dispTweetIcons = true;
+			ExpEmoteIcon( dispTweetIcons );
 		}
 	}
 
@@ -108,13 +161,17 @@ public class ChatButtonUIController : EventTrigger
 		// 上方向に対するドラッグのみ有効
 		if( data.position.y > dragBeginPos.y )
 		{
-			if( !dispEmoteIcons )
+			if( !dispTweetIcons )
 			{
-				dispEmoteIcons = true;
-				ExpEmoteIcon( dispEmoteIcons );
+				dispTweetIcons = true;
+				ExpEmoteIcon( dispTweetIcons );
 			}
 		}
 	}
+
+	/// <summary>
+	/// タッチ範囲から抜けたときのイベント
+	/// </summary>
 	public void OnPointerExit( )
 	{
 		Debug.Log("OnPointerExit");

@@ -86,12 +86,13 @@ public class MapController : MonoBehaviour
 			m.SetPosition( b.gps.longitude, b.gps.latitude );
 
 			// 条件を満たしていたら開花
+			// TODO: 条件設定を見直す
 			if( b.energy.Count >= b.energyToBloom )
 			{
+				// TODO: 咲く花の種類の選定
 				//	var texIdx = GetFeelingToInt( t.felling );
 				var texIdx = 1;
 				m.texture = flowerTex[ texIdx ];
-
 			}
 			else
 			{
