@@ -118,12 +118,12 @@ public class MapController : MonoBehaviour
 		int nearestIdx = 0;
 		float nearestDist = float.MaxValue;
 
-		var vOriginPos = new Vector3( (float)originPosition.longitude, (float)originPosition.latitude );
+		var vOriginPos = new Vector3( (float)originPosition.latitude, (float)originPosition.longitude );
 
 		for( int i = 0 ; i < bloomPointInfo.Count ; i++ )
 		{
 			var bp = bloomPointInfo[ i ];
-			var vTargetPos = new Vector3( ( float )bp.gps.longitude, ( float )bp.gps.latitude );
+			var vTargetPos = new Vector3( ( float )bp.gps.latitude, ( float )bp.gps.longitude );
 
 			float distance = Mathf.Abs( ( vTargetPos - vOriginPos ).magnitude );
 			if( distance < nearestDist )

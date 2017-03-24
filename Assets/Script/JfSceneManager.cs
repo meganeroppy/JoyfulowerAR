@@ -112,6 +112,8 @@ public class JfSceneManager : MonoBehaviour
 				map.UpdateMarker( res.tweetInfoList, res.bloomPointInfoList );
 			} ) );
 
+
+			timer = 0;
 			// 一定時間待機
 			while( timer < update_interval )
 			{

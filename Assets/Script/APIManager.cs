@@ -221,7 +221,9 @@ namespace api
 			
 				// データベースからの取得をシミュレート
 				Debug.Log("APIの返却値での花生成をシミュレートします");
-				var twtCnt = UnityEngine.Random.Range(6, 15);
+
+				// ツイート数
+				var twtCnt = UnityEngine.Random.Range(6, 32);
 
 				var alp = "ABCDEF";
 
@@ -233,6 +235,15 @@ namespace api
 
 					res.tweetInfoList.Add( info );
 				}
+
+				// ブルーム地点数
+				var bInfo = new BloomPointInfo();
+				bInfo.gps = new GPS(ARObjectSetter.sampleData["SoraCity"]);
+				res.bloomPointInfoList.Add( bInfo );
+				bInfo.gps = new GPS(ARObjectSetter.sampleData["DaiBiru"]);
+				res.bloomPointInfoList.Add( bInfo );
+				bInfo.gps = new GPS(ARObjectSetter.sampleData["TokyoDoom"]);
+				res.bloomPointInfoList.Add( bInfo );
 
 				callback( res );
 
@@ -301,6 +312,13 @@ namespace api
 		/// 高度
 		/// </summary>
 		public double altitude;
+
+		public GPS( GpsPosition pos )
+		{
+			longitude = (double)pos.longitude;
+			latitude = (double)pos.latitude;
+			altitude = 0;
+		}
 	}
 
 	/// <summary>
@@ -369,12 +387,12 @@ namespace api
 		/// <summary>
 		/// つぶやきリスト
 		/// </summary>
-		public List<TweetInfo> tweetInfoList;
+		public List<TweetInfo> tweetInfoList = new List<TweetInfo>();
 
 		/// <summary>
 		/// ブルームポイントリスト
 		/// </summary>
-		public List<BloomPointInfo> bloomPointInfoList;
+		public List<BloomPointInfo> bloomPointInfoList = new List<BloomPointInfo>();
 	}
 
 	/// <summary>
