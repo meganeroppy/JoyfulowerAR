@@ -81,8 +81,8 @@ namespace api
 			// Json変換でパラメータがあればGetメソッド用パラメータに変換して最後に付ける
 			if( !string.IsNullOrEmpty( json ) )
 			{
-				var getParam = MakeGetMethodParamFromJson( json );
-				url += getParam;
+			//	var getParam = MakeGetMethodParamFromJson( json );
+			//	url += getParam;
 			}
 
 			Debug.Log( "通信開始 : " + url );
@@ -127,6 +127,7 @@ namespace api
 			catch( System.Exception e )
 			{
 				Debug.LogError( e.ToString() );
+				yield break;
 			}
 
 			if( res != null )
