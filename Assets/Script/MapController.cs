@@ -25,10 +25,15 @@ public class MapController : MonoBehaviour
 	[SerializeField]
 	private Texture2D bloomPointTex = null;
 
+	[SerializeField]
+	OnlineMapsLocationService location = null;
 
 	// Use this for initialization
 	void Start () 
 	{
+		location.OnLocationInited = () => { Debug.Log("OnLocationInited()"); };
+//		location.OnGetLocation = (out res1, out res2) => { Debug.Log("OnGetLocation()"); };
+		location.OnLocationChanged = res => { Debug.Log("OnGetLocation()"); };
 		// マップの拡大率を指定
 	//	map.zoom = 20;
 	//	map.AddMarker()
@@ -36,6 +41,7 @@ public class MapController : MonoBehaviour
 	
 	void Update()
 	{
+	//	map.position = location.position;
 		// TODO: GPSから自分の位置を判断して中心にしたいな あと回転も
 		//		map.SetPosition( longitude, latitude );
 	}
@@ -81,6 +87,11 @@ public class MapController : MonoBehaviour
 		{
 			// 生成
 			var m = new OnlineMapsMarker();
+
+			// 中心に整列
+			m.align = OnlineMapsAlign.Center;
+
+			m.scale = 4;
 
 			// 位置をセット
 			m.SetPosition( b.gps.longitude, b.gps.latitude );

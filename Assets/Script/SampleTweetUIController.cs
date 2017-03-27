@@ -45,8 +45,18 @@ public class SampleTweetUIController : MonoBehaviour
 		// 処理中フラグを立てる
 		processing = true;
 
+		var alp = "ABCDEF";
+		var idx = feeling % alp.Length;
+		var cFeel = alp[ idx ];
 		// API送信
-		yield return null;
+		var request = new api.SendSampleTweetRequestParameter();
+//		request.my_position = 
+		request.joy = cFeel;
+
+		yield return api.APIManager.instance.SendSampleTweet( request, res => 
+			{
+				
+			} );
 
 		// TODO: 送信完了をアナウンス
 		AnnounceCompleteSendSampleTweet( feeling );

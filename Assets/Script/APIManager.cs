@@ -257,8 +257,7 @@ namespace api
 
 				yield break;
 			}
-
-
+				
 			var request = new GetTweetInfoRequestParameter();
 
 			yield return StartCoroutine( Call<GetTweetInfoRequestParameter, GetTweetInfoResponseParameter>( request, res =>
@@ -485,6 +484,11 @@ namespace api
 		/// 自分の経度
 		/// </summary>
 		public float lon;
+
+		/// <summary>
+		/// 自分の高度
+		/// </summary>
+		public float alt;
 
 		/// <summary>
 		/// 送信する感情
